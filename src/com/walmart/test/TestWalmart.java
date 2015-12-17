@@ -20,7 +20,7 @@ public class TestWalmart {
 
 	private WebDriver driver;
 	private String baseURL;
-	
+
 	// wait time in secs
 	private static final int WAIT_TIME = 4;
 	private User user = new User();
@@ -197,7 +197,7 @@ public class TestWalmart {
 	// test the number of items in the cart
 	@Test(dependsOnMethods = { "testViewCartAddedItem" })
 	public void testNumberOfItemsInCart() {
-		
+
 		// find the outer div which contain div for each added item
 		WebElement itemsGrid = driver.findElement(By
 				.xpath("//div[@data-collection-element='true']"));
@@ -208,7 +208,7 @@ public class TestWalmart {
 	}
 
 	// signout and close the driver
-	 @AfterClass
+	@AfterClass
 	public void afterClass() {
 		WebElement myAccount = driver.findElement(By.linkText("My Account"));
 		Actions action = new Actions(driver);
