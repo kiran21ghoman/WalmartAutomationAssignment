@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Default suite]">
+  <parameter name="searchItemName" value="tv"/>
+  <test name="testIdentifyAnAddableItemToCart(failed)">
+    <parameter name="searchItemName" value="tv"/>
+    <classes>
+      <class name="com.walmart.test.TestWalmart">
+        <methods>
+          <include name="testIdentifyAnAddableItemToCart"/>
+          <include name="testAddItemToCart"/>
+          <include name="testSearch"/>
+          <include name="beforeClass"/>
+          <include name="testViewCartAddedItem"/>
+          <include name="testNumberOfItemsInCart"/>
+          <include name="login"/>
+        </methods>
+      </class> <!-- com.walmart.test.TestWalmart -->
+    </classes>
+  </test> <!-- testIdentifyAnAddableItemToCart(failed) -->
+</suite> <!-- Failed suite [Default suite] -->

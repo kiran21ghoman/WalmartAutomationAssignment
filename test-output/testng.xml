@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Default suite" parallel="false">
+
+	<test name="testSearch">
+		<classes>
+			<class name="com.walmart.main.DataProviderSource" />
+		</classes>
+	</test>
+	<test name="testIdentifyAnAddableItemToCart">
+		<classes>
+			<parameter name="searchItemName" value="tv"></parameter>
+			<class name="com.walmart.test.TestWalmart" />
+		</classes>
+	</test>
+</suite>

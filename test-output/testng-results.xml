@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="7" passed="7">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="95098" started-at="2015-12-17T18:48:58Z" finished-at="2015-12-17T18:50:33Z">
+    <groups>
+    </groups>
+    <test name="testSearch" duration-ms="9" started-at="2015-12-17T18:48:58Z" finished-at="2015-12-17T18:48:58Z">
+    </test> <!-- testSearch -->
+    <test name="testIdentifyAnAddableItemToCart" duration-ms="95030" started-at="2015-12-17T18:48:58Z" finished-at="2015-12-17T18:50:33Z">
+      <class name="com.walmart.test.TestWalmart">
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="beforeClass" is-config="true" duration-ms="25551" started-at="2015-12-17T10:48:58Z" finished-at="2015-12-17T10:49:23Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeClass -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="login" duration-ms="23372" started-at="2015-12-17T10:49:23Z" finished-at="2015-12-17T10:49:47Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="testSearch(java.lang.String)[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="testSearch" duration-ms="15143" started-at="2015-12-17T10:49:47Z" data-provider="searchItemsDataProvider" depends-on-methods="com.walmart.test.TestWalmart.login" finished-at="2015-12-17T10:50:02Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[tv]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSearch -->
+        <test-method status="PASS" signature="testSearch(java.lang.String)[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="testSearch" duration-ms="8139" started-at="2015-12-17T10:50:02Z" data-provider="searchItemsDataProvider" depends-on-methods="com.walmart.test.TestWalmart.login" finished-at="2015-12-17T10:50:10Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Socks]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSearch -->
+        <test-method status="PASS" signature="testIdentifyAnAddableItemToCart(java.lang.String)[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="testIdentifyAnAddableItemToCart" duration-ms="537" started-at="2015-12-17T10:50:10Z" depends-on-methods="com.walmart.test.TestWalmart.testSearch" finished-at="2015-12-17T10:50:11Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[tv]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIdentifyAnAddableItemToCart -->
+        <test-method status="PASS" signature="testAddItemToCart()[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="testAddItemToCart" duration-ms="15811" started-at="2015-12-17T10:50:11Z" depends-on-methods="com.walmart.test.TestWalmart.testIdentifyAnAddableItemToCart" finished-at="2015-12-17T10:50:26Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAddItemToCart -->
+        <test-method status="PASS" signature="testViewCartAddedItem()[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="testViewCartAddedItem" duration-ms="6005" started-at="2015-12-17T10:50:26Z" depends-on-methods="com.walmart.test.TestWalmart.testAddItemToCart" finished-at="2015-12-17T10:50:32Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testViewCartAddedItem -->
+        <test-method status="PASS" signature="testNumberOfItemsInCart()[pri:0, instance:com.walmart.test.TestWalmart@6fffcba5]" name="testNumberOfItemsInCart" duration-ms="443" started-at="2015-12-17T10:50:32Z" depends-on-methods="com.walmart.test.TestWalmart.testViewCartAddedItem" finished-at="2015-12-17T10:50:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testNumberOfItemsInCart -->
+      </class> <!-- com.walmart.test.TestWalmart -->
+    </test> <!-- testIdentifyAnAddableItemToCart -->
+  </suite> <!-- Default suite -->
+</testng-results>
