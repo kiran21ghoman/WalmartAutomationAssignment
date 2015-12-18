@@ -16,27 +16,38 @@ import com.walmart.main.DataProviderSource;
 import com.walmart.main.User;
 import com.walmart.util.Util;
 
+/**
+ * @author Kirandeep The TestWalmart class is used to test the search
+ *         functionality, add an item in the cart, and test the items in the
+ *         cart.
+ */
 public class TestWalmart {
 
 	private WebDriver driver;
 	private String baseURL;
 
-	// wait time in secs
+	// wait time in seconds
 	private static final int WAIT_TIME = 4;
 	private User user = new User();
 	private Cart cart = new Cart();
 
+	/**
+	 * beforeClass will be executed before the execution of first test case in
+	 * TestWalmart class
+	 */
 	@BeforeClass
 	public void beforeClass() {
 		baseURL = "http://www.walmart.com/";
-		//
+		// relative path for chrome driver binary
 		System.setProperty("webdriver.chrome.driver", "./lib/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.get(baseURL);
 	}
 
-	// login with existing account
+	/**
+	 * perform login operation
+	 */
 	@Test
 	public void login() {
 		// click on sign in link
@@ -56,10 +67,15 @@ public class TestWalmart {
 		driver.manage().timeouts().implicitlyWait(WAIT_TIME, TimeUnit.SECONDS);
 		WebElement loggedIn = driver.findElement(By
 				.xpath("//span[@class='js-account-logged-in active']"));
-		Assert.assertNotNull(loggedIn.getText(), "message on failure");
+		Assert.assertNotNull(loggedIn.getText(), "Failure: user has not been logged in.");
 	}
 
-	// search list of items
+	/**
+	 * @param item
+	 *            search item name, fetched with the help of data provider The
+	 *            testSearch method will perform the search operation for list
+	 *            of items
+	 */
 	@Test(dependsOnMethods = { "login" }, dataProvider = "searchItemsDataProvider", dataProviderClass = DataProviderSource.class)
 	public void testSearch(String item) throws InterruptedException {
 		WebElement searchElement = Util.findElement(By.id("search"), WAIT_TIME,
@@ -69,8 +85,7 @@ public class TestWalmart {
 		driver.findElement(
 				By.xpath("//button[@class='searchbar-submit js-searchbar-submit']"))
 				.submit();
-		// FIXME
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		WebElement menuElement = driver
 				.findElement(
 						By.xpath("//form[@class='js-searchbar searchbar']"))
@@ -98,18 +113,20 @@ public class TestWalmart {
 			Assert.assertNotNull(
 					Util.findElement(By.className("result-summary-container"),
 							WAIT_TIME, driver).getText(),
-					"test whether result container available");
+					"Failure: result container not available");
 		}
 	}
 
-	/*
-	 * after search, test if there is any item in result test can be added to
-	 * the cart
+	/**
+	 * @param searchItemName
+	 *            item name for search after search, test, if there is any item
+	 *            in result test can be added to the cart and add item in the
+	 *            cart
+	 * @throws InterruptedException 
 	 */
-	@Parameters("searchItemName")
+	 @Parameters("searchItemName")
 	@Test(dependsOnMethods = { "testSearch" })
-	public void testIdentifyAnAddableItemToCart(String searchItemName) {
-
+	public void testIdentifyAnAddableItem(String searchItemName) throws InterruptedException {
 		WebElement searchElement = Util.findElement(By.id("search"), WAIT_TIME,
 				driver);
 		searchElement.clear();
@@ -117,41 +134,24 @@ public class TestWalmart {
 		driver.findElement(
 				By.xpath("//button[@class='searchbar-submit js-searchbar-submit']"))
 				.submit();
-		driver.manage().timeouts().pageLoadTimeout(WAIT_TIME, TimeUnit.SECONDS);
-
-		// check if an item can be added to the cart. .
-		Assert.assertTrue(Util.isElementAvailable(
-				By.xpath("//div[@data-item-id or @data-product-id]"), driver));
-	}
-
-	// this method will just add the item in the cart
-	@Test(dependsOnMethods = { "testIdentifyAnAddableItemToCart" })
-	public void testAddItemToCart() throws InterruptedException {
-
+		Thread.sleep(1000);
 		/*
 		 * Fetching the first item/product from the search result.
-		 * 
 		 * @data-item-id is unique id of an item.
-		 * 
 		 * @data-product-id is unique id of a featured products. It shown when
 		 * we search for a main category for ed: toys
 		 */
-		driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
-		// FIXME
-		Thread.sleep(1000);
-		WebElement itemToAddInCart = Util.findElement(By.id("search"),
-				WAIT_TIME, driver);
-		if (Util.isElementAvailable(By.xpath("//div[@id='tile-container']"),
-				driver)) {
-			itemToAddInCart = itemToAddInCart.findElement(By
-					.xpath("//div[@id='tile-container']//div[@data-item-id]"));
+		WebElement itemToAddInCart;
+		Actions actions = new Actions(driver);
+		if (Util.isElementAvailable(
+				By.xpath("//div[@id='search-container-center']"), driver)) {
+			itemToAddInCart = Util
+					.findElement(
+							By.xpath("//div[@id='search-container-center']//div[@id='tile-container']//div[@data-item-id]"),
+							WAIT_TIME, driver);
 			cart.addItem(itemToAddInCart.getAttribute("data-item-id"));
-			Util.findElement(
-					By.xpath("//div[@id='tile-container']//div[@data-item-id]"),
-					WAIT_TIME, driver)
-					.findElement(By.xpath("//a[@class='js-product-image']"))
-					.click();
-
+			actions.moveToElement(itemToAddInCart.findElement(By.tagName("a")))
+					.click().perform();
 		} else {
 			// a product should be available in featured products. It shown when
 			// we search for a main category for eg: toys
@@ -159,42 +159,41 @@ public class TestWalmart {
 					.findElement(By
 							.xpath("//div[@id='sponsored-container-middle-2']//div[@data-product-id]"));
 			cart.addItem(itemToAddInCart.getAttribute("data-product-id"));
-			Util.findElement(
-					By.xpath("//div[@id='sponsored-container-middle-2']//div[@data-product-id]"),
-					WAIT_TIME, driver)
-					.findElement(By.xpath("//a[@class='js-product-image']"))
-					.click();
+			actions.moveToElement(itemToAddInCart.findElement(By.tagName("a")))
+					.click().perform();
 		}
+
 		/*
 		 * button with text "add item to cart".. find button by using it's id
 		 */
 		WebElement addToCartButton = Util.findElement(
-				By.id("WMItemAddToCartBtn"), WAIT_TIME, driver);
+				By.id("WMItemAddToCartBtn"), 10, driver);
 		// after clicking on this button item will be added to cart
 		addToCartButton.click();
 	}
 
-	/*
-	 * View Cart: test item added is in the cart and also test added item is the
-	 * only item in the cart
+	/**
+	 * The testViewCartAddedItem will test item added is in the cart and also
+	 * test added item is the only item in the cart
 	 */
-	@Test(dependsOnMethods = { "testAddItemToCart" })
+	@Test(dependsOnMethods = { "testIdentifyAnAddableItem" })
 	public void testViewCartAddedItem() {
-		WebElement viewCartButton = Util.findElement(By.id("PACViewCartBtn"),
-				WAIT_TIME, driver);
+		WebElement viewCartButton = driver.findElement(By.id("PACViewCartBtn"));
 		viewCartButton.click();
-		driver.manage().timeouts().pageLoadTimeout(WAIT_TIME, TimeUnit.SECONDS);
 
 		// view cart. check the cart item is same as the added item
-		WebElement addeditem = driver
-				.findElement(By
-						.xpath("//div[@class='cart-list cart-list-active']//div[@class='cart-item-image']//a[@data-us-item-id]"));
+		WebElement addeditem = Util
+				.findElement(
+						By.xpath("//div[@class='cart-list cart-list-active']//div[@class='cart-item-image']//a[@data-us-item-id]"),
+						WAIT_TIME, driver);
 		String itemId = addeditem.getAttribute("data-us-item-id");
 		Assert.assertEquals(itemId, cart.getAddedItem(),
-				"Check if item in cart is correcr, which we just added");
+				"Failure: item in cart is not correct.");
 	}
 
-	// test the number of items in the cart
+	/**
+	 * The testNumberOfItemsInCart test the number of items in the cart
+	 */
 	@Test(dependsOnMethods = { "testViewCartAddedItem" })
 	public void testNumberOfItemsInCart() {
 
@@ -204,10 +203,13 @@ public class TestWalmart {
 		List<WebElement> cartItems = itemsGrid.findElements(By
 				.className("cart-item-row"));
 		Assert.assertEquals(cartItems.size(), 1,
-				"the total items in card should be one");
+				"Failure: the total items in cart are not one");
 	}
 
-	// signout and close the driver
+	/**
+	 * The afterClass method will executed after the last test of TestWalmart
+	 * class It will test the number of items in the cart
+	 */
 	@AfterClass
 	public void afterClass() {
 		WebElement myAccount = driver.findElement(By.linkText("My Account"));
