@@ -11,8 +11,7 @@ Before performing the test cases, cart for logged in user should be empty. If it
 
 To Run: Go to "test-output" folder-> right-click on testng.xml file ->Run As- TestNG suite.
 
-To maintain a flow between all methods, I am using “dependsOnMethods” annotation. It means every test case depends on previous case except the first test case. Before running 
-the test case’s class, before class method will get executed and it will load the base URL.
+To maintain a flow between all methods, I am using “dependsOnMethods” annotation. It means every test case depends on previous case except the first test case.
 
 Username and password can be changed manually(can get it dynamically) in "User.java" Class which placed under com/walmart/main directory.
 
